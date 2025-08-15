@@ -52,4 +52,16 @@ public class TaskService {
         }
         return false;
     }
+
+    public Optional<TaskModel> updateTaskCompletion(UUID id, boolean completed) {
+        Optional<TaskModel> existingTask = taskRepository.findById(id);
+
+        if (existingTask.isPresent()) {
+            TaskModel task = existingTask.get();
+            task.setCompleted(completed);
+            return Optional.of(taskRepository.save(task));
+        }
+
+        return Optional.empty();
+    }
 }

@@ -1,6 +1,7 @@
 package com.delia.cortex.controllers;
 
 import com.delia.cortex.dto.CreateTaskRequest;
+import com.delia.cortex.dto.UpdateTaskCompletionRequest;
 import com.delia.cortex.models.TaskModel;
 import com.delia.cortex.services.TaskService;
 import jakarta.validation.Valid;
@@ -54,4 +55,15 @@ public class TaskController {
         }
         return ResponseEntity.notFound().build();
     }
+    
+    @PatchMapping("/{id}/completion")
+    public ResponseEntity<TaskModel> updateTaskCompletion(
+        @PathVariable UUID id, 
+        @RequestBody
+        UpdateTaskCompletionRequest request) {
+    
+    return taskService.updateTaskCompletion(id, request.isCompleted())
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
+}
 }
